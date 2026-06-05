@@ -8,15 +8,18 @@ export const dynamic = 'force-dynamic';
 export default async function DashboardPage() {
   const supabase = createClient();
 
-  // Fetch course payloads directly on the React Server Component (RSC) thread
-  const { data: courses, error } = await supabase
+ try {
+  const { data, error } = await supabase
     .from('courses')
-    .select('*')
-    .order('created_at', { ascending: true });
+    .select('*');
 
-  if (error || !courses) {
-    throw new Error('Supabase execution error payload encountered');
+  if (error) {
+    console.error("❌ CRITICAL SUPABASE ERROR:", error.message, error.details, error.hint);
+    return <div>Database Error: {error.message}</div>;
   }
 
-  return <DashboardGrid courses={courses as Course[]} />;
+} catch (err) {
+  console.error("❌ SERVER CRASH ERROR:", err);
+  return <div>Server Component Crash</div>;
+}
 }
