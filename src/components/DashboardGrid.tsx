@@ -24,10 +24,10 @@ const itemVariants = {
 };
 
 const springHover = {
-  type: 'spring',
-  stiffness: 300,
-  damping: 20
-};
+  type: "spring",
+  stiffness: 400,
+  damping: 15,
+} as const; 
 
 export function DashboardGrid({ courses }: DashboardGridProps) {
   return (
