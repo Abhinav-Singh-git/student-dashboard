@@ -1,25 +1,34 @@
 import { createClient } from '@/utils/supabase';
 import { DashboardGrid } from '@/components/DashboardGrid';
-import { Course } from '@/types/database';
 
-// Opt into dynamic server side execution mechanics per page cycle
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
   const supabase = createClient();
 
- try {
-  const { data, error } = await supabase
-    .from('courses')
-    .select('*');
+  try {
+    const { data: courses, error } = await supabase
+      .from('courses')
+      .select('*');
 
-  if (error) {
-    console.error("❌ CRITICAL SUPABASE ERROR:", error.message, error.details, error.hint);
-    return <div>Database Error: {error.message}</div>;
+    if (error) {
+      console.error("❌ CRITICAL SUPABASE ERROR:", error.message, error.details, error.hint);
+      return (
+        <div className="flex h-screen items-center justify-center bg-black text-zinc-400">
+          <p>Database Error: {error.message}</p>
+        </div>
+      );
+    }
+
+    // Pass the fetched courses array into your layout component
+    return <DashboardGrid courses={courses || []} />;
+
+  } catch (err) {
+    console.error("❌ SERVER CRASH ERROR:", err);
+    return (
+      <div className="flex h-screen items-center justify-center bg-black text-zinc-400">
+        <p>Server Component Crash</p>
+      </div>
+    );
   }
-
-} catch (err) {
-  console.error("❌ SERVER CRASH ERROR:", err);
-  return <div>Server Component Crash</div>;
-}
 }

@@ -8,7 +8,6 @@ interface DynamicIconProps {
 }
 
 export function DynamicIcon({ name, className }: DynamicIconProps) {
-  // Fallback to a generic book icon if the specific database icon isn't matched
   const LucideIcon = (Icons as any)[name] || Icons.BookOpen;
   return <LucideIcon className={className} aria-hidden="true" />;
 }
