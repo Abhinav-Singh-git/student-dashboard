@@ -23,11 +23,12 @@ const itemVariants = {
   show: { opacity: 1, y: 0 }
 };
 
-const springHover = {
+import {Transition } from "framer-motion";
+const springHover: Transition = {
   type: "spring",
   stiffness: 400,
   damping: 15,
-} as const; 
+}; 
 
 export function DashboardGrid({ courses }: DashboardGridProps) {
   return (
